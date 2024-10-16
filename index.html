@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WidgetX Library</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>WidgetX Library</h1>
+
+    <!-- DOM tree -->
+    <div id="root" class="tree">
+      <div widget="widgets/a">
+        <div widget="widgets/b"></div>
+      </div>
+      <div widget="widgets/c"></div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button id="initBtn" class="btn">Init</button>
+      <button id="destroyBtn" class="btn">Destroy</button>
+      <button id="doneBtn" class="btn">Done</button>
+      <button id="failBtn" class="btn">Fail</button>
+    </div>
+
+    <!-- Info block -->
+
+    <fieldset class="info-block">
+      <legend>InfoBox:</legend>
+      <div id="info"></div>
+    </fieldset>
+
+    <script type="module">
+      // Library import
+      import { X } from "./src/X.js";
+
+      const xLib = new X();
+      console.log("🚀 ~ xLib:", xLib);
+    </script>
+  </body>
+</html>
