@@ -7,7 +7,9 @@
 ## Table of Contents
 
 - [Requirements](#requirements)
-- [Features](#features)
+- [How the Project Was Created](#how-the-project-was-created)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
 
 ### Requirements:
 
@@ -43,16 +45,59 @@
 
    - Widgets that extend this base class automatically bind event handler methods (methods ending with Handler) to the widget instance, providing syntactic sugar for event handling.
 
-### Features:
+### How the Project Was Created
 
-- Environment-Agnostic: The library works both in the browser and Node.js.
-- Widget Lifecycle Management: Widgets can be initialized, destroyed, and updated using the provided buttons.
-- Dynamic Widget Loading: Widgets are loaded dynamically using JavaScript’s native dynamic imports.
-- Two-stage initialization:
-  - Pre-initialization: Before child widgets are initialized.
-  - Post-initialization: After child widgets are initialized.
-- Clean API:
-  - init(): Asynchronous method to initialize widgets.
-  - destroy(): Synchronous method to destroy widgets and reset their state.
-  - Automatic event handler binding for methods ending in Handler.
-- Error Handling: Handles situations where a widget is destroyed during initialization by throwing a custom WidgetDestroyedError.
+<img title="process" alt="process" width="100%" height="500" src="./public/images/process.png">
+
+1. Planning:
+
+   - The project was divided into modules `(X.js, Widget.js, widget files) `to ensure each component had a clear responsibility.
+   - The X library manages the widget lifecycle, while each widget class extends the base functionality from `Widget.js.`
+
+2. Widget State Management:
+
+   - The Widget class was built to manage different states of a widget, like when it’s being set up (pre-initialized), fully initialized (initialized), marked as finished (finished), or if it fails (failed). These states are shown visually with CSS classes: p`re-initialized, initialized, finished, and failed`.
+
+3. Environment Handling:
+
+   - The project checks whether it's running in a browser or in Node.js. If it’s in Node.js, it uses JSDOM to imitate a browser environment so the widgets behave the same way.
+
+4. Error Handling:
+
+   - A custom error `(WidgetDestroyedError)` is thrown if a widget is destroyed during initialization. This ensures that any ongoing processes are aware of the interruption.
+
+5. Dynamic Widget Loading:
+
+   - The library uses a dynamic resolver to load widgets as needed. By using JavaScript dynamic imports, it keeps the system flexible and efficient, only loading widgets when they are needed.
+
+6. Event Handling:
+
+   - The base Widget class provides a convenient way to bind event handlers. Any methods that end with `Handler` are automatically bound to the widget instance, simplifying the process of managing widget-specific events.
+
+7. Simplicity and Extensibility:
+
+   - The project focuses on keeping things simple while ensuring flexibility. Developers can easily extend the Widget class to create new widgets, and the X library handles their lifecycle, providing a seamless experience for both developers and users.
+
+### Tech Stack
+
+- JavaScript (ES6+): The core logic for widget library and lifecycle.
+- HTML/CSS: The interface for testing and interacting with widgets.
+- JSDOM: For testing the project in a Node.js environment.
+- Browser (Chrome, Firefox, etc.): For testing in a browser.
+
+### Installation
+
+To set up the project, follow the steps below:
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Milan-960/WidgetX-library.git
+cd WidgetX-library
+```
+
+Install dependencies:
+
+```bash
+npm install
+```

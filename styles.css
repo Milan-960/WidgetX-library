@@ -8,6 +8,34 @@ h1 {
   text-align: center;
 }
 
+.pre-initialized {
+  background-color: lightyellow;
+}
+
+.initialized {
+  background-color: lightgreen;
+}
+
+.finished {
+  background-color: lightblue;
+}
+
+.failed {
+  background-color: lightcoral;
+}
+
+div[widget] {
+  border: 1px solid #ccc;
+  margin: 5px;
+  padding: 10px;
+}
+
+.tree {
+  border: 1px solid black;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .buttons {
   display: flex;
   justify-content: center;

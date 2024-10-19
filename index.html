@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WidgetX Library</title>
+    <title>WidgetX library</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>WidgetX Library</h1>
+    <h1>WidgetX library</h1>
 
     <!-- DOM tree -->
     <div id="root" class="tree">
@@ -26,7 +26,6 @@
     </div>
 
     <!-- Info block -->
-
     <fieldset class="info-block">
       <legend>InfoBox:</legend>
       <div id="info"></div>
@@ -36,8 +35,59 @@
       // Library import
       import { X } from "./src/X.js";
 
-      const xLib = new X();
-      console.log("🚀 ~ xLib:", xLib);
+      const xLib = new X(); // Library instance
+      const rootNode = document.getElementById("root"); // DOM root node
+      const infoBlock = document.getElementById("info"); // Info block for messages
+
+      // Event listener for the Init button
+      document.getElementById("initBtn").addEventListener("click", () => {
+        xLib.init(rootNode, (errors) => {
+          if (errors) {
+            infoBlock.innerHTML = `Errors: ${errors
+              .map((e) => e.message)
+              .join(", ")}`;
+          } else {
+            infoBlock.innerHTML =
+              "Widgets initialized triggered: All widgets initialized successfully";
+          }
+        });
+      });
+
+      // Event listener for the Destroy button
+      document.getElementById("destroyBtn").addEventListener("click", () => {
+        xLib.destroy(rootNode);
+        infoBlock.innerHTML = "Widgets destroyed triggered";
+      });
+
+      // Event listener for the Done button to mark all widgets as finished
+      document.getElementById("doneBtn").addEventListener("click", () => {
+        const widgets = rootNode.querySelectorAll("[widget]"); // Select all widget nodes
+        widgets.forEach((widgetNode) => {
+          const widgetInstance = xLib.widgets.get(widgetNode); // Retrieve widget instance
+          if (widgetInstance) {
+            widgetInstance.finish(); // Call the finish method on each widget
+          }
+        });
+        infoBlock.innerHTML =
+          "Done action triggered: Widgets marked as finished"; // Update info block
+      });
+
+      // Event listener for the Fail button to simulate failure
+      document.getElementById("failBtn").addEventListener("click", () => {
+        const customError = new Error(
+          "Simulated failure in widget initialization."
+        );
+        const widgets = rootNode.querySelectorAll("[widget]"); // Select all widget nodes
+
+        widgets.forEach((widgetNode) => {
+          const widgetInstance = xLib.widgets.get(widgetNode); // Retrieve widget instance
+          if (widgetInstance) {
+            widgetInstance.fail(customError); // Call the fail method on each widget
+          }
+        });
+
+        infoBlock.innerHTML = `Fail action triggered: Widgets failed to initialize. Error: ${customError.message}`; // Update info block
+      });
     </script>
   </body>
 </html>
