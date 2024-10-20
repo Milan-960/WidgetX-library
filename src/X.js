@@ -1,22 +1,55 @@
+/**
+ * Class X
+ *
+ * This class is responsible for managing widget initialization and destruction
+ * in both browser and non-browser environments. It dynamically loads widgets,
+ * handles errors locally inside each method, and provides support for JSDOM
+ * when needed. The class also allows for an optional custom resolver and
+ * optional feedback through an `infoBlock`.
+ *
+ * Features:
+ * - Handles dynamic imports for widgets.
+ * - Supports JSDOM for non-browser environments (e.g., Node.js).
+ * - Localized error handling in `init`, `_initRecursive`, and `destroy`.
+ */
+
 import { WidgetDestroyedError } from "./utils/index.js";
 
+// JSDOM instance for non-browser environments
 let JSDOM = null;
 
 export class X {
+  /**
+   * @constructor
+   * Initializes the X class with an optional custom resolver and info block.
+   *
+   * @param {Function|null} resolver - Custom resolver for widget imports. Falls back to defaultResolver.
+   * @param {HTMLElement|null} infoBlock - An optional HTML element to display error messages or logs.
+   */
   constructor(resolver = null, infoBlock = null) {
-    this.widgets = new Map(); // Keeps track of widgets per node
-    this.resolver = resolver || this.defaultResolver; // Set resolver for dynamic imports
-    this.infoBlock = infoBlock; // Store infoBlock for updates
+    this.widgets = new Map(); // Track initialized widgets and their corresponding DOM nodes.
+    this.resolver = resolver || this.defaultResolver;
+    this.infoBlock = infoBlock;
 
+    // If not in a browser environment, load JSDOM.
     if (!this.isBrowser()) {
       this.loadJSDOM();
     }
   }
 
+  /**
+   * Determines if the environment is a browser.
+   *
+   * @returns {boolean} - True if the environment is a browser, false otherwise.
+   */
   isBrowser() {
     return typeof window !== "undefined" && typeof document !== "undefined";
   }
 
+  /**
+   * Dynamically loads JSDOM in non-browser environments (like Node.js).
+   * JSDOM is used to simulate a browser-like environment for widget initialization.
+   */
   async loadJSDOM() {
     if (!JSDOM && typeof window === "undefined") {
       const jsdomModule = await import("jsdom");
@@ -29,19 +62,32 @@ export class X {
     }
   }
 
+  /**
+   * Default resolver for dynamically importing widget modules.
+   *
+   * @param {string} path - Path to the widget module.
+   * @returns {Promise<Module>} - A promise resolving to the dynamically imported module.
+   */
   defaultResolver(path) {
     return import(`./${path}.js`);
   }
 
+  /**
+   * Initializes widgets within a target node and reports any initialization errors through a callback.
+   *
+   * @param {HTMLElement} target - The target DOM node containing widgets.
+   * @param {Function} callback - A function that will be called with an array of errors (or null if none).
+   */
   async init(target, callback) {
     try {
-      const errors = await this._initRecursive(target);
+      const errors = await this._initRecursive(target); // Recursively initialize widgets within the target.
+
       if (errors.length > 0) {
         callback(errors);
         errors.forEach((error) => {
           console.error(error.message);
           if (this.infoBlock) {
-            this.infoBlock.innerHTML += `<p>${error.message}</p>`; // Show in infoBlock
+            this.infoBlock.innerHTML += `<p>${error.message}</p>`; // Display error in the info block (if available).
           }
         });
       } else {
@@ -53,10 +99,19 @@ export class X {
     }
   }
 
+  /**
+   * Recursively initializes all widgets found within a given DOM node.
+   * This method dynamically imports and initializes each widget, handling errors at each step.
+   *
+   * @param {HTMLElement} node - The DOM node containing potential widgets.
+   * @returns {Array<Error>} - An array of errors encountered during the initialization process.
+   * @private
+   */
   async _initRecursive(node) {
-    const errors = [];
+    const errors = []; // Array to store any errors encountered during initialization.
     const widgets = node.querySelectorAll("[widget]");
 
+    // Iterate over each widget node and attempt to initialize them.
     for (let widgetNode of widgets) {
       if (!this.widgets.has(widgetNode)) {
         try {
@@ -65,7 +120,7 @@ export class X {
           const widgetClassName = `Widget${widgetPath
             .split("/")
             .pop()
-            .toUpperCase()}`;
+            .toUpperCase()}`; // Derive the widget class name.
           const WidgetClass = module[widgetClassName];
 
           if (!WidgetClass) {
@@ -100,6 +155,7 @@ export class X {
       }
     }
 
+    // Post-initialization phase for successfully initialized widgets.
     for (let widgetNode of widgets) {
       const widgetInstance = this.widgets.get(widgetNode);
       if (widgetInstance && !widgetInstance.hasFailed) {
@@ -121,8 +177,15 @@ export class X {
     return errors;
   }
 
+  /**
+   * Destroys all widgets within the given target node, handling errors related to widget destruction.
+   *
+   * @param {HTMLElement} target - The DOM node containing the widgets to destroy.
+   */
   destroy(target) {
-    const widgets = target.querySelectorAll("[widget]");
+    const widgets = target.querySelectorAll("[widget]"); // Find all widget nodes in the target.
+
+    // Iterate over the widgets in reverse order to safely destroy them.
     for (let i = widgets.length - 1; i >= 0; i--) {
       const widgetNode = widgets[i];
       const widgetInstance = this.widgets.get(widgetNode);
@@ -143,7 +206,7 @@ export class X {
           if (error instanceof WidgetDestroyedError) {
             console.error(error.message);
             if (this.infoBlock) {
-              this.infoBlock.innerHTML += `<p>${error.message}</p>`;
+              this.infoBlock.innerHTML += `<p>${error.message}</p>`; // Display message in info block.
             }
           } else {
             throw error;

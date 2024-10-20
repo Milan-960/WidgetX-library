@@ -10,6 +10,9 @@
 - [How the Project Was Created](#how-the-project-was-created)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
+- [Project Structure](#project-structure)
+- [How to Run the Project](#running-the-project)
+- [Testing the Functionality](#testing-the-functionality)
 
 ### Requirements:
 
@@ -101,3 +104,77 @@ Install dependencies:
 ```bash
 npm install
 ```
+
+### Project Structure
+
+```bash
+ROOT Folder
+├── src/
+│   ├── X.js          # Main library logic for widgetX
+│   ├── Widget.js     # Base widget class with preInit, postInit, and destroy methods
+│   ├── widgets/
+│   │   ├── a.js      # Widget A implementation
+│   │   ├── b.js      # Widget B implementation
+│   │   └── c.js      # Widget C implementation
+│   ├── utils/
+│   │   ├── index.js  # utils functions
+├── index.html        # HTML file with DOM tree, buttons, and info block
+├── styles.css        # CSS file to handle widget state transitions
+└── package.json      # Project metadata and dependencies
+```
+
+- X.js: Contains the core logic for the X library, handling widget initialization and destruction.
+- Widget.js: Defines the base class for all widgets, with common methods for state management (init, destroy).
+- Widgets: Separate files (a.js, b.js, c.js) represent different widgets, each extending the base Widget class.
+
+### Running the Project
+
+You can run the project using the Live Server extension in Visual Studio Code or any other method to serve the index.html file.
+
+Running with Live Server:
+
+- Open the project folder in Visual Studio Code.
+  Right-click on index.html and select "Open with Live Server".
+
+- The project will open in your browser and automatically serve the page.
+
+Alternative Method:
+
+- You can also serve the project with a simple ` HTTP` server to avoid any issues with relative imports: and this will start on `PORT:3000\*\*`
+
+```bash
+npx serve .
+```
+
+Interact with Widgets:
+
+- Init: Initializes all widgets in the DOM tree.
+- Destroy: Destroys all initialized widgets.
+- Done: Marks all initialized widgets as "finished."
+- Fail: Simulates a failure scenario.
+
+### Testing the Functionality
+
+1. Initialize Widgets:
+
+   - Click the "Init" button to initialize all widgets in the DOM tree.
+   - Widgets will go through pre-initialization (light yellow) and post-initialization (light green).
+   - You will see the log in the InfoBox: `All widgets initialized successfully`, or any errors if initialization fails.
+
+2. Destroy Widgets:
+
+   - Click the `Destroy` button to remove all widgets state and reset the tree to its original state.
+
+3. Mark Widgets as Finished:
+
+   - Click the `Done` button to mark all initialized widgets as finished (light blue).
+   - This simulates completion of widget functionality.
+
+4. Simulate Failure:
+
+   - Click the `Fail` button to simulate widget failure. and will mark it as (light coral)
+
+5. Info Block:
+
+   - The InfoBox shows the status of widget initialization, destruction, and failure.
+   - If any errors occur during widget initialization, they will be displayed in the info block for debugging.
