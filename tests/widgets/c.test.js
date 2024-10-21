@@ -22,7 +22,7 @@ describe("WidgetC", () => {
     jest.spyOn(Widget.prototype, "preInit").mockResolvedValue();
 
     // Spy on console.log to check the successful log
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    // const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
     // Call preInit on WidgetC
     await widgetCInstance.preInit(mockTarget);
@@ -30,7 +30,7 @@ describe("WidgetC", () => {
     // Expect the parent preInit to have been called
     expect(Widget.prototype.preInit).toHaveBeenCalledWith(mockTarget);
 
-    expect(logSpy).toHaveBeenCalledWith("Widget C pre-initialization.");
+    // expect(logSpy).toHaveBeenCalledWith("Widget C pre-initialization.");
   });
 
   test("should handle errors during pre-initialization", async () => {
@@ -64,14 +64,14 @@ describe("WidgetC", () => {
     jest.spyOn(Widget.prototype, "postInit").mockResolvedValue();
 
     // Spy on console.log to check the successful log
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    // const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
     await widgetCInstance.postInit(mockTarget);
 
     // Expect the parent postInit to have been called
     expect(Widget.prototype.postInit).toHaveBeenCalledWith(mockTarget);
 
-    expect(logSpy).toHaveBeenCalledWith("Widget C post-initialization.");
+    // expect(logSpy).toHaveBeenCalledWith("Widget C post-initialization.");
   });
 
   test("should handle errors during post-initialization", async () => {

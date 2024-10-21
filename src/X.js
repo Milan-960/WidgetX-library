@@ -195,7 +195,6 @@ export class X {
           // Call the widget's destroy method (which includes resetState)
           widgetInstance.destroy();
           this.widgets.delete(widgetNode);
-          console.log(`Widget ${widgetNode.getAttribute("widget")} destroyed.`);
 
           if (this.infoBlock) {
             this.infoBlock.innerHTML += `<p>Widget ${widgetNode.getAttribute(

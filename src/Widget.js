@@ -61,13 +61,11 @@ export class Widget {
    */
   destroy() {
     if (this.isDestroyed) {
-      console.log("Widget already destroyed.");
       return;
     }
     this.isDestroyed = true;
     this._removeEventHandlers();
     this._resetState();
-    console.log("Widget destroyed and state reset.");
   }
 
   /**
@@ -134,6 +132,5 @@ export class Widget {
    */
   finish() {
     this.target.classList.add("finished");
-    console.log("Widget marked as finished.");
   }
 }

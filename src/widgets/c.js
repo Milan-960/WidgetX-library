@@ -15,7 +15,6 @@ export class WidgetC extends Widget {
   async preInit(target) {
     try {
       await super.preInit(target); // Pre-initialize (before children)
-      console.log("Widget C pre-initialization.");
     } catch (error) {
       console.error(
         `Error during Widget C pre-initialization: ${error.message}`
@@ -33,7 +32,6 @@ export class WidgetC extends Widget {
   async postInit(target) {
     try {
       await super.postInit(target); // Call parent postInit logic
-      console.log("Widget C post-initialization.");
     } catch (error) {
       console.error(
         `Error during Widget C post-initialization: ${error.message}`
