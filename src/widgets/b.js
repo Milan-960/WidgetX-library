@@ -20,7 +20,7 @@ export class WidgetB extends Widget {
       console.error(
         `Error during Widget B pre-initialization: ${error.message}`
       );
-      throw error; // Mark the widget as failed
+      this.fail(error); // Mark the widget as failed
     }
   }
 
@@ -38,7 +38,7 @@ export class WidgetB extends Widget {
       console.error(
         `Error during Widget B post-initialization: ${error.message}`
       );
-      throw error; // Mark the widget as failed
+      this.fail(error); // Mark the widget as failed
     }
   }
 }

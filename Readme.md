@@ -140,10 +140,22 @@ Running with Live Server:
 
 Alternative Method:
 
-- You can also serve the project with a simple ` HTTP` server to avoid any issues with relative imports: and this will start on `PORT:3000\*\*`
+- You can also serve the project with a simple `HTTP` server to avoid any issues with relative imports: and this will start on `PORT:3000`
 
 ```bash
 npx serve .
+```
+
+You can run the `jest` test by using the following below commands:
+
+```bash
+npm run test:watch
+#OR
+npm test
+#OR
+npm run
+#OR
+npm run test:coverage
 ```
 
 Interact with Widgets:
@@ -178,3 +190,7 @@ Interact with Widgets:
 
    - The InfoBox shows the status of widget initialization, destruction, and failure.
    - If any errors occur during widget initialization, they will be displayed in the info block for debugging.
+
+### Author
+
+If you have any questions or need further clarification, feel free to reach out to me. [Milan-960](https://github.com/Milan-960)

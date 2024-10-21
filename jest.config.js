@@ -18,4 +18,5 @@ module.exports = {
   },
   collectCoverageFrom: ["src/**/*.{ts,tsx,js,jsx}", "!src/index.ts"],
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
+  setupFiles: ["<rootDir>/tests/setup.js"], // Setup file for Jest to run before tests
 };
